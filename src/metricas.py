@@ -160,6 +160,5 @@ def gerar_poluentes_por_mes(poluentes_filtrada):
         .sort_values("periodo")
     )
 
-
     return poluentes_por_mes
 
