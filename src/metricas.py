@@ -1,4 +1,38 @@
 #gerar ranking de municípios
+#calcular total de internações - internacoes_filtradas(municipio), base_filtrada(total de internacoes)
+import pandas as pd
+
+def calcular_total_internacoes(internacoes_filtrada):
+    """
+    Calcula o total de internações considerando os filtros aplicados pelo usuário.
+    """
+
+    if internacoes_filtrada.empty:
+        return 0
+
+    return int(internacoes_filtrada["internacoes"].sum())
+
+#calcular média de PM2,5
+def calcular_media_poluente(poluentes_filtrada, poluente):
+    """
+    Calcula a média de um poluente selecionado.
+    Exemplo de poluente: PM25, PM10, NO2, CO, O3.
+    """
+
+    if poluentes_filtrada.empty:
+        return None
+
+    if poluente not in poluentes_filtrada.columns:
+        return None
+
+    media = poluentes_filtrada[poluente].mean()
+
+    if pd.isna(media):
+        return None
+
+    return round(media, 2)
+    
+
 def gerar_ranking_municipios(internacoes_filtrada):
     """
     Gera ranking de municípios por total de internações.
