@@ -35,7 +35,7 @@ def calcular_media_poluente(poluentes_filtrada, poluente):
 #base mensal para análise
 def montar_base_analise(internacoes_filtrada, poluentes_filtrada):
     """
-     Base mensal que une internações e poluentes.
+    Base mensal que une internações e poluentes.
 
     A internação pode estar filtrada por município.
     Os poluentes são mensais e gerais, sem município.
