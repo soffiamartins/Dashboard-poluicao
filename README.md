@@ -37,7 +37,7 @@ streamlit run dashboard/app.py
 
 ### INTEGRANTES:
 -Enrico Schultz
--Kathleyn Farias
+-Kathelyn Farias
 -Pedro Henrique da Silva
 -Pedro Henrique Pontes
 -Soffia Martins
