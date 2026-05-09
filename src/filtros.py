@@ -24,5 +24,5 @@ def aplicar_filtros(
 
     if municipios_selecionados:
         internacoes_filtrada = internacoes_filtrada[internacoes_filtrada["municipio"].isin(municipios_selecionados)]
-   
+
     return base_filtrada, internacoes_filtrada, poluentes_fltrada

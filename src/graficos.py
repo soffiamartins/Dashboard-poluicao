@@ -25,7 +25,6 @@ def grafico_internacoes_por_mes(internacoes_por_mes):
 
     return fig
 
-
 #gráfico de linhas múltiplas: usar a métrica poluentes por mês;
 def grafico_poluentes_por_mes(poluentes_por_mes):
     """
@@ -52,18 +51,17 @@ def grafico_poluentes_por_mes(poluentes_por_mes):
         y="media",
         color="poluente",
         markers=True,
-        title="Poluentes por mês"
     )
 
     fig.update_layout(
         xaxis_title="Período",
         yaxis_title="Média do poluente",
         legend_title="Poluente",
-        title_x=0.0
+        title_x=0.0,
+        title="",
     )
 
     return fig
-
 
 #dispersão
 def grafico_dispersao_poluente_internacoes(base_analise, poluente):
@@ -76,7 +74,7 @@ def grafico_dispersao_poluente_internacoes(base_analise, poluente):
         x=poluente,
         y="internacoes_total",
         trendline="ols",
-        title=f"Dispersão: {poluente} x internações",
+        title="Cada ponto representa um mês",
         hover_data=["periodo", "ano", "mes"]
     )
 
@@ -94,15 +92,12 @@ def grafico_ranking_municipios(ranking_municipios, top_n=10):
     Cria gráfico de barras horizontais com o ranking de municípios.
     """
 
-
     ranking_top = ranking_municipios.head(top_n).copy()
-
 
     ranking_top = ranking_top.sort_values(
         "internacoes_total",
         ascending=True
     )
-
 
     fig = px.bar(
         ranking_top,
@@ -113,17 +108,14 @@ def grafico_ranking_municipios(ranking_municipios, top_n=10):
         title=f"Top {top_n} municípios por internações"
     )
 
-
     fig.update_layout(
         xaxis_title="Total de internações",
-        yaxis_title="Município",
+        yaxis_title="",
         title_x=0.0
     )
-
 
     fig.update_traces(
         textposition="outside"
     )
-
 
     return fig

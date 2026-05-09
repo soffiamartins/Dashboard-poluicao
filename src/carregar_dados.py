@@ -1,5 +1,4 @@
 from pathlib import Path
-
 import pandas as pd
 import streamlit as st
 
@@ -15,7 +14,7 @@ def carregar_dados():
     base = preparar_datas(base)
     internacoes = preparar_datas(internacoes)
     poluentes = preparar_datas(poluentes)
-   
+
     internacoes["internacoes"] = pd.to_numeric(
     internacoes["internacoes"],
     errors="coerce"
@@ -31,7 +30,6 @@ def carregar_dados():
 
     return base, internacoes, poluentes
 
-
 def preparar_datas(df):
     df = df.copy()
 
@@ -46,7 +44,6 @@ def preparar_datas(df):
         df["mes"] = df["periodo"].dt.month
 
     return df
-
 
 def converter_coluna_numerica(df, coluna):
     df = df.copy()
