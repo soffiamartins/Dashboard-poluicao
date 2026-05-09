@@ -4,7 +4,7 @@ from pathlib import Path
 import streamlit as st
 import plotly.express as px
 
-ROOT_DIR = Path(file).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
 #IMPORTS
@@ -14,3 +14,145 @@ from src.metricas import calcular_total_internacoes, calcular_media_poluente, mo
 from src.graficos import grafico_internacoes_por_mes, grafico_poluentes_por_mes, grafico_dispersao_poluente_internacoes, grafico_ranking_municipios
 
 base, internacoes, poluentes = carregar_dados()
+anos_disponiveis = sorted(base["ano"].unique())
+municipios_disponiveis = (
+internacoes["municipio"].dropna().astype(str).str.strip().sort_values().unique())
+
+#DICIONARIO
+mapa_poluentes = {
+    "PM2,5": "PM25",
+    "PM10": "PM10",
+    "NO2": "NO2",
+    "SO2": "SO2",
+    "CO": "CO",
+    "O3": "O3"
+}
+
+#SIDEBAR
+anos_selecionados = st.sidebar.multiselect(
+    "Ano", 
+    anos_disponiveis,
+    default=anos_disponiveis
+)
+
+municipios_selecionados = st.sidebar.multiselect(
+    "Município",
+    municipios_disponiveis,
+    placeholder="Todos os municípios"
+)
+
+poluente_label = st.sidebar.selectbox(
+    "Poluente para análise",
+    list(mapa_poluentes.keys())
+)
+
+poluente_selecionado = mapa_poluentes[poluente_label]
+base_filtrada, internacoes_filtrada, poluicoes_filtrada = aplicar_filtros(
+    base, internacoes, poluentes, anos_selecionados, municipios_selecionados)
+
+base_filtrada, internacoes_filtrada, poluentes_filtrada = aplicar_filtros(
+    base=base,
+    internacoes=internacoes,
+    poluentes=poluentes,
+    anos_selecionados=anos_selecionados,
+    municipios_selecionados=municipios_selecionados
+)
+
+total_internacoes = calcular_total_internacoes(internacoes_filtrada)
+
+media_pm25 = calcular_media_poluente(
+    poluentes_filtrada=poluentes_filtrada,
+    poluente="PM25"
+)
+
+base_analise = montar_base_analise(
+    internacoes_filtrada=internacoes_filtrada,
+    poluentes_filtrada=poluentes_filtrada
+)
+
+correlacao = calcular_correlacao(
+    base_analise=base_analise,
+    poluente=poluente_selecionado
+)
+
+#gerando as bases
+ranking_municipios = gerar_ranking_municipios(internacoes_filtrada)
+
+internacoes_por_mes = gerar_internacoes_por_mes(internacoes_filtrada)
+
+poluentes_por_mes = gerar_poluentes_por_mes(poluentes_filtrada)
+
+
+st.header("Poluição do Ar e Internações Hospitalares - Espírito Santo")
+st.caption("Dashboard acadêmico para análise de internações respiratórias e poluentes atmosféricos.")
+
+st.subheader("Teste das métricas")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric(
+        "Total de internações",
+        f"{total_internacoes:,}".replace(",", ".")
+    )
+
+with col2:
+    st.metric(
+        "Média de PM2,5",
+        media_pm25
+    )
+
+with col3:
+    valor_correlacao = correlacao if correlacao is not None else "Sem dados"
+    st.metric(
+        f"Correlação {poluente_selecionado} x internações",
+        valor_correlacao
+    )
+
+
+#Exibição de gráfico - Internações por mês
+
+st.subheader("Internações por mês")
+
+fig_internacoes = grafico_internacoes_por_mes(internacoes_por_mes)
+
+st.plotly_chart(
+    fig_internacoes,
+    use_container_width=True
+)
+
+#Exibição de gráfico - Poluentes por mês
+st.subheader("Poluentes por mês")
+
+fig_poluentes = grafico_poluentes_por_mes(poluentes_por_mes)
+
+st.plotly_chart(
+    fig_poluentes,
+    use_container_width=True
+)
+
+#Dispersão
+st.subheader("Dispersão: poluente x internações")
+
+fig_dispersao = grafico_dispersao_poluente_internacoes(
+    base_analise=base_analise,
+    poluente=poluente_selecionado
+)
+
+st.plotly_chart(
+    fig_dispersao,
+    use_container_width=True
+)
+
+#ranking municipios
+st.subheader("Ranking de municípios")
+
+fig_ranking = grafico_ranking_municipios(
+    ranking_municipios=ranking_municipios,
+    top_n=10
+)
+
+st.plotly_chart(
+    fig_ranking,
+    use_container_width=True
+)
