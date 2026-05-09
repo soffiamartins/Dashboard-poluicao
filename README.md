@@ -34,3 +34,11 @@ A partir do MVP, foi possível observar que:
 3. Instalar as dependências: pip install streamlit pandas plotly matplotlib
 4. Executar o dashboard
 streamlit run dashboard/app.py
+
+### INTEGRANTES:
+-Enrico Schultz
+-Kathleyn Farias
+-Pedro Henrique da Silva
+-Pedro Henrique Pontes
+-Soffia Martins
+
