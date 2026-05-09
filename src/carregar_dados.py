@@ -31,8 +31,6 @@ def carregar_dados():
 
     return base, internacoes, poluentes
 
-    return base, internacoes, poluentes
-
 
 def preparar_datas(df):
     df = df.copy()

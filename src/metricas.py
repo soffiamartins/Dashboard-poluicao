@@ -131,6 +131,7 @@ def gerar_internacoes_por_mes(internacoes_filtrada):
 
     return internacoes_por_mes
 
+
 #gerar poluentes por mês
 def gerar_poluentes_por_mes(poluentes_filtrada):
     """
@@ -141,9 +142,7 @@ def gerar_poluentes_por_mes(poluentes_filtrada):
     if poluentes_filtrada.empty:
         return pd.DataFrame()
 
-
     colunas_poluentes = ["PM25", "PM10", "NO2", "SO2", "CO", "O3"]
-
 
     colunas_existentes = [
         coluna for coluna in colunas_poluentes
@@ -157,4 +156,3 @@ def gerar_poluentes_por_mes(poluentes_filtrada):
     )
 
     return poluentes_por_mes
-
