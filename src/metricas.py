@@ -132,13 +132,11 @@ def gerar_internacoes_por_mes(internacoes_filtrada):
     return internacoes_por_mes
 
 #gerar poluentes por mês
-
 def gerar_poluentes_por_mes(poluentes_filtrada):
     """
     Gera a série mensal de poluentes.
     Essa base será usada no gráfico de poluentes por mês.
     """
-
 
     if poluentes_filtrada.empty:
         return pd.DataFrame()
@@ -151,8 +149,6 @@ def gerar_poluentes_por_mes(poluentes_filtrada):
         coluna for coluna in colunas_poluentes
         if coluna in poluentes_filtrada.columns
     ]
-
-
     poluentes_por_mes = (
         poluentes_filtrada
         .groupby(["periodo", "ano", "mes"], as_index=False)[colunas_existentes]
