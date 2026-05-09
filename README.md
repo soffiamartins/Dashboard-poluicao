@@ -27,3 +27,10 @@ A partir do MVP, foi possível observar que:
 - alguns municípios concentram maior número de internações;
 - os poluentes também apresentam variações mensais;
 - a comparação entre poluentes e internações pode ajudar a levantar hipóteses sobre a relação entre qualidade do ar e saúde respiratória.
+
+### COMO EXECUTAR O PROJETO
+1. Clonar o repositório
+2. Acessar a pasta do projeto
+3. Instalar as dependências: pip install streamlit pandas plotly matplotlib
+4. Executar o dashboard
+streamlit run dashboard/app.py
