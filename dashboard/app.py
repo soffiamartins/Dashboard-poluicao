@@ -11,6 +11,6 @@ sys.path.append(str(ROOT_DIR))
 from src.carregar_dados import carregar_dados
 from src.filtros import aplicar_filtros
 from src.metricas import calcular_total_internacoes, calcular_media_poluente, montar_base_analise, calcular_correlacao, gerar_ranking_municipios, gerar_internacoes_por_mes, gerar_poluentes_por_mes
-from src.graficos import grafico_internacoes_por_mes, grafico_poluentes_por_mes
+from src.graficos import grafico_internacoes_por_mes, grafico_poluentes_por_mes, grafico_dispersao_poluente_internacoes
 
 base, internacoes, poluentes = carregar_dados()
