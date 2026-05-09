@@ -63,3 +63,27 @@ def grafico_poluentes_por_mes(poluentes_por_mes):
     )
 
     return fig
+
+
+#dispersão
+def grafico_dispersao_poluente_internacoes(base_analise, poluente):
+    """
+    Cria gráfico de dispersão entre o poluente selecionado e as internações.
+    """
+
+    fig = px.scatter(
+        base_analise,
+        x=poluente,
+        y="internacoes_total",
+        trendline="ols",
+        title=f"Dispersão: {poluente} x internações",
+        hover_data=["periodo", "ano", "mes"]
+    )
+
+    fig.update_layout(
+        xaxis_title=f"Média de {poluente}",
+        yaxis_title="Total de internações",
+        title_x=0.0
+    )
+
+    return fig
