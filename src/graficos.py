@@ -69,14 +69,26 @@ def grafico_dispersao_poluente_internacoes(base_analise, poluente):
     Cria gráfico de dispersão entre o poluente selecionado e as internações.
     """
 
+    dados_grafico = base_analise.copy()
+
+    if "ano" in dados_grafico.columns and "mes" in dados_grafico.columns:
+        dados_grafico["periodo"] = (
+            dados_grafico["ano"].astype(str)
+            + "-"
+            + dados_grafico["mes"].astype(str).str.zfill(2)
+        )
+    elif "periodo" in dados_grafico.columns:
+        dados_grafico["periodo"] = dados_grafico["periodo"].astype(str)
+
     fig = px.scatter(
-        base_analise,
-        x=poluente,
-        y="internacoes_total",
-        trendline="ols",
-        title="Cada ponto representa um mês",
-        hover_data=["periodo", "ano", "mes"]
-    )
+    base_analise,
+    x=poluente,
+    y="internacoes_total",
+    trendline="ols",
+    title="Cada ponto representa um mês",
+    hover_data=["periodo", "ano", "mes"],
+    render_mode="svg"
+)
 
     fig.update_layout(
         xaxis_title=f"Média de {poluente}",
