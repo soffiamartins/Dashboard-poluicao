@@ -119,3 +119,57 @@ def grafico_ranking_municipios(ranking_municipios, top_n=10):
     )
 
     return fig
+
+def grafico_sazonalidade_internacoes(sazonalidade_internacoes):
+    """
+    Cria gráfico de barras mostrando a média de internações por mês do ano.
+    """
+
+    fig = px.bar(
+        sazonalidade_internacoes,
+        x="mes_nome",
+        y="media_internacoes",
+        text="media_internacoes",
+        hover_data=["total_internacoes", "anos_observados"],
+        title="Sazonalidade das internações respiratórias"
+    )
+
+    fig.update_layout(
+        xaxis_title="Mês do ano",
+        yaxis_title="Média de internações",
+        title_x=0.0
+    )
+
+    fig.update_traces(
+        texttemplate="%{text:.0f}",
+        textposition="outside"
+    )
+
+    return fig
+
+def grafico_sazonalidade_por_estacao(sazonalidade_estacao):
+    """
+    Cria gráfico de barras mostrando a média de internações por estação do ano.
+    """
+
+    fig = px.bar(
+        sazonalidade_estacao,
+        x="estacao",
+        y="media_internacoes",
+        text="media_internacoes",
+        hover_data=["total_internacoes", "anos_observados"],
+        title="Sazonalidade das internações por estação do ano"
+    )
+
+    fig.update_layout(
+        xaxis_title="Estação do ano",
+        yaxis_title="Média de internações",
+        title_x=0.0
+    )
+
+    fig.update_traces(
+        texttemplate="%{text:.0f}",
+        textposition="outside"
+    )
+
+    return fig

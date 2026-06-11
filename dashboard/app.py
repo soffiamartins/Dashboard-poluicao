@@ -10,12 +10,22 @@ sys.path.append(str(ROOT_DIR))
 #IMPORTS
 from src.carregar_dados import carregar_dados
 from src.filtros import aplicar_filtros
-from src.metricas import calcular_total_internacoes, calcular_media_poluente, montar_base_analise,calcular_correlacao,gerar_ranking_municipios,gerar_internacoes_por_mes, gerar_poluentes_por_mes
+from src.metricas import (
+    calcular_total_internacoes,
+    calcular_media_poluente,
+    montar_base_analise,
+    calcular_correlacao,
+    gerar_ranking_municipios,
+    gerar_internacoes_por_mes,
+    gerar_poluentes_por_mes,
+    gerar_sazonalidade_internacoes,
+    calcular_estacao_predominante
+)
 from src.graficos import (
     grafico_internacoes_por_mes,
     grafico_poluentes_por_mes,
     grafico_dispersao_poluente_internacoes,
-    grafico_ranking_municipios
+    grafico_ranking_municipios,
 )
 
 st.set_page_config(
@@ -92,6 +102,11 @@ internacoes_por_mes = gerar_internacoes_por_mes(internacoes_filtrada)
 
 poluentes_por_mes = gerar_poluentes_por_mes(poluentes_filtrada)
 
+sazonalidade_internacoes = gerar_sazonalidade_internacoes(internacoes_filtrada)
+
+#sazonalidade_estacao = gerar_sazonalidade_por_estacao(internacoes_filtrada)
+
+estacao_predominante = calcular_estacao_predominante(internacoes_filtrada)
 
 st.title("Poluição do Ar e Internações Hospitalares - ES")
 
@@ -108,7 +123,7 @@ st.divider()
 
 st.subheader("Resumo dos indicadores")
 
-col1, col2, col3 = st.columns(3, border=True)
+col1, col2, col3, col4 = st.columns(4, border=True)
 
 with col1:
     st.metric(
@@ -128,6 +143,12 @@ with col3:
     st.metric(
         label=f":material/monitoring: Correlação {poluente_selecionado} x internações",
         value=valor_correlacao,
+    )
+
+with col4:
+    st.metric(
+        label="Estação predominante",
+        value=estacao_predominante
     )
 
 st.divider()
@@ -189,3 +210,5 @@ with grafico_col4:
             fig_ranking,
             use_container_width=True
         )
+
+st.divider()
