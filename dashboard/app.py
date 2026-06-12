@@ -8,6 +8,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
 #IMPORTS
+from src.exportacao import botoes_exportar_grafico
 from src.carregar_dados import carregar_dados
 from src.filtros import aplicar_filtros
 from src.metricas import (
@@ -26,6 +27,7 @@ from src.graficos import (
     grafico_poluentes_por_mes,
     grafico_dispersao_poluente_internacoes,
     grafico_ranking_municipios,
+    grafico_sazonalidade_internacoes,
 )
 
 st.set_page_config(
@@ -67,8 +69,6 @@ poluente_label = st.sidebar.selectbox(
 )
 
 poluente_selecionado = mapa_poluentes[poluente_label]
-base_filtrada, internacoes_filtrada, poluicoes_filtrada = aplicar_filtros(
-    base, internacoes, poluentes, anos_selecionados, municipios_selecionados)
 
 base_filtrada, internacoes_filtrada, poluentes_filtrada = aplicar_filtros(
     base=base,
@@ -104,7 +104,9 @@ poluentes_por_mes = gerar_poluentes_por_mes(poluentes_filtrada)
 
 sazonalidade_internacoes = gerar_sazonalidade_internacoes(internacoes_filtrada)
 
-#sazonalidade_estacao = gerar_sazonalidade_por_estacao(internacoes_filtrada)
+fig_sazonalidade = grafico_sazonalidade_internacoes(
+    sazonalidade_internacoes=sazonalidade_internacoes
+)
 
 estacao_predominante = calcular_estacao_predominante(internacoes_filtrada)
 
@@ -169,6 +171,13 @@ with grafico_col1:
             use_container_width=True
         )
 
+        with st.expander("Exportar gráfico"):
+            botoes_exportar_grafico(
+                fig=fig_internacoes,
+                nome_arquivo="internacoes_por_mes",
+                chave="internacoes_por_mes"
+            )
+
 with grafico_col2:
     with st.container(border=True):
         st.markdown("#### :material/air: Poluentes por mês ug/m²")
@@ -179,6 +188,13 @@ with grafico_col2:
             fig_poluentes,
             use_container_width=True
         )
+
+        with st.expander("Exportar gráfico"):
+            botoes_exportar_grafico(
+                fig=fig_poluentes,
+                nome_arquivo="poluentes_por_mes",
+                chave="poluentes_por_mes"
+                )
 
 
 grafico_col3, grafico_col4 = st.columns(2)
@@ -197,6 +213,13 @@ with grafico_col3:
             use_container_width=True
         )
 
+        with st.expander("Exportar gráfico"):
+            botoes_exportar_grafico(
+                fig=fig_dispersao,
+                nome_arquivo=f"dispersao_{poluente_selecionado}_internacoes",
+                chave="dispersao"
+            )
+
 with grafico_col4:
     with st.container(border=True):
         st.markdown("#### :material/bar_chart: Ranking de municípios")
@@ -211,4 +234,28 @@ with grafico_col4:
             use_container_width=True
         )
 
+        with st.expander("Exportar gráfico"):
+            botoes_exportar_grafico(
+                fig=fig_ranking,
+                nome_arquivo="ranking_municipios",
+                chave="ranking_municipios"
+            )
+
 st.divider()
+
+st.subheader("Análise de sazonalidade")
+
+with st.container(border=True):
+    st.markdown("#### :material/calendar_month: Sazonalidade das internações")
+
+    st.plotly_chart(
+        fig_sazonalidade,
+        use_container_width=True
+    )
+
+    with st.expander("Exportar gráfico"):
+        botoes_exportar_grafico(
+            fig=fig_sazonalidade,
+            nome_arquivo="sazonalidade_internacoes",
+            chave="sazonalidade_internacoes"
+        )
