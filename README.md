@@ -66,7 +66,7 @@ A partir do MVP, foi possível observar que:
 1. Clonar o repositório:
 
 ```bash
-git clone <link-do-repositorio>
+git clone <https://github.com/soffiamartins/Dashboard-poluicao.git>
 ```
 
 2. Acessar a pasta do projeto:
